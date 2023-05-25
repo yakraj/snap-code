@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css"
+    />
+    <link rel="stylesheet" href="./new.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/material-darker.min.css"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    <!-- Include the language mode you want to use, for example, JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
+  </head>
+  <body>
+    <div id="id1684907668905">
+      <div onclick="createDataCode()" class="add-button">
+        <img width="30px" alt="delete button" src="./assects/add.svg" />
+      </div>
+
+      <div onclick="RemoveElement()" class="delete-button">
+        <img width="30px" alt="delete button" src="./assects/delete.svg" />
+      </div>
+    </div>
+    <!-- the actual play ground starts here -->
+    <div id="PlayGround"></div>
+    <!-- Your content here -->
+    <!-- <textarea id="code-editor" name="code-editor"></textarea>
+    <textarea id="code-editor" name="code-editor"></textarea> -->
+    <script>
+      // Initialize CodeMirror
+      let PlayGround = document.getElementById("PlayGround");
+      let SelectedElement;
+      // now here i'll create those htmls
+      var elementHTML = `
+      <div id="id1684851225384">
+        <div id="id1684851251761">
+          <div id="id1684851279793">
+            <div id="id1684851304817"></div>
+            <div style="background: yellow;" id="id1684851304817"></div>
+            <div style="background: green;" id="id1684851304817"></div>
+          </div>
+            <input id = "myInput" type="text" placeholder = "Title" />
+        </div>
+        <textarea type="text" id="code-editor" name="code-editor"></textarea>
+      </div>
+    `;
+
+      function Highlighter() {
+        let textareas = document.querySelectorAll("#code-editor");
+
+        for (let i = 0; i < textareas.length; i++) {
+          const editor = CodeMirror.fromTextArea(textareas[i], {
+            mode: "javascript", // Set the language mode, for example, 'javascript'
+            lineNumbers: true, // Show line numbers
+            fontSize: 50,
+            lineWrapping: true,
+            smartIndent: true,
+            autocorrect: true,
+            theme: "material-darker" // Set the theme to Material Dark
+          });
+        }
+        // the actual script for the
+      }
+      function Resizer() {
+        let containers = document.querySelectorAll("#id1684851225384");
+
+        for (let i = 0; i < containers.length; i++) {
+          let rectangle = containers[i];
+
+          // Variables to store initial position and size
+          var startX, startY, startWidth, startHeight;
+
+          // Variable to track if resizing is active
+          var isResizing = false;
+
+          // Function to handle the drag event
+          function handleDrag(event) {
+            if (isResizing) {
+              // Calculate the new position
+              var newWidth = startWidth + event.clientX - startX;
+              var newHeight = startHeight + event.clientY - startY;
+
+              // Update the size of the rectangle
+              rectangle.style.width = newWidth + "px";
+              rectangle.style.height = newHeight + "px";
+            }
+          }
+          document.removeEventListener("mousemove", handleDrag);
+          // Function to handle the start of the drag
+          function handleDragStart(event) {
+            // Check if cursor is at the edge of the rectangle
+            var rect = rectangle.getBoundingClientRect();
+            var edgeSize = 10; // Adjust this value to change the edge size
+            if (
+              event.clientX > rect.right - edgeSize ||
+              event.clientX < rect.left + edgeSize ||
+              event.clientY > rect.bottom - edgeSize ||
+              event.clientY < rect.top + edgeSize
+            ) {
+              // Store the initial position and size
+              startX = event.clientX;
+              startY = event.clientY;
+              startWidth = rectangle.offsetWidth;
+              startHeight = rectangle.offsetHeight;
+
+              // Set resizing flag to true
+              isResizing = true;
+
+              // Attach the drag event listener to the document
+              document.addEventListener("mousemove", handleDrag);
+            }
+          }
+
+          // Function to handle the end of the drag
+          function handleDragEnd(event) {
+            // Set resizing flag to false
+            isResizing = false;
+
+            // Remove the drag event listener from the document
+            document.removeEventListener("mousemove", handleDrag);
+          }
+
+          // Attach the drag event listeners to the rectangle
+          rectangle.addEventListener("mousedown", handleDragStart);
+          rectangle.addEventListener("mouseup", handleDragEnd);
+        }
+      }
+
+      function InputResizer() {
+        var inputs = document.querySelectorAll("#myInput");
+        for (let i = 0; i < inputs.length; i++) {
+          let input = inputs[i];
+          input.addEventListener("input", function () {
+            input.style.width = "70px";
+            input.style.width =
+              input.scrollWidth <= 70 ? "70px" : input.scrollWidth + "px";
+          });
+        }
+      }
+
+      function MoveRec() {
+        var rectangles = document.querySelectorAll("#id1684851225384");
+        var topbars = document.querySelectorAll("#id1684851251761");
+        var isDragging = false;
+        var dragStartX;
+        var dragStartY;
+        var initialLeft;
+        var initialTop;
+        var activeRectangle;
+
+        topbars.forEach(function (topbar, index) {
+          topbar.addEventListener("mousedown", function (event) {
+            isDragging = true;
+            dragStartX = event.clientX;
+            dragStartY = event.clientY;
+            activeRectangle = rectangles[index];
+            initialLeft = activeRectangle.offsetLeft;
+            initialTop = activeRectangle.offsetTop;
+          });
+        });
+
+        document.addEventListener("mousemove", function (event) {
+          if (isDragging) {
+            var offsetX = event.clientX - dragStartX;
+            var offsetY = event.clientY - dragStartY;
+            activeRectangle.style.left = initialLeft + offsetX + "px";
+            activeRectangle.style.top = initialTop + offsetY + "px";
+          }
+        });
+
+        document.addEventListener("mouseup", function (event) {
+          isDragging = false;
+          activeRectangle = null;
+        });
+      }
+
+      // select parent element
+
+      function SelectElement() {
+        let parents = document.querySelectorAll("#id1684851225384");
+
+        parents.forEach(function (parent) {
+          parent.addEventListener("click", function (event) {
+            if (!event.target.classList.contains("myInput")) {
+              SelectedElement = parent;
+              console.log(parent);
+            }
+          });
+        });
+      }
+
+      // remove element
+      function RemoveElement() {
+        SelectedElement.remove();
+      }
+      function createDataCode() {
+        var container = document.createElement("div");
+        container.innerHTML = elementHTML;
+        PlayGround.appendChild(container.firstElementChild);
+
+        setTimeout(() => {
+          Highlighter();
+          Resizer();
+          InputResizer();
+          MoveRec();
+          SelectElement();
+        }, 100);
+      }
+
+      Highlighter();
+      Resizer();
+    </script>
+  </body>
+</html>
