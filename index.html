@@ -21,198 +21,292 @@
         <img width="30px" alt="delete button" src="./assects/add.svg" />
       </div>
 
-      <div onclick="RemoveElement()" class="delete-button">
+      <!-- <div onclick="RemoveElement()" class="delete-button">
         <img width="30px" alt="delete button" src="./assects/delete.svg" />
-      </div>
+      </div> -->
     </div>
+    <div id="imagesList">
+      <img
+        src="https://t4.ftcdn.net/jpg/05/19/99/45/240_F_519994541_TABPKuZ1QFkxo7uo33kYa0CBLnQ5MUq6.jpg"
+        draggable="true"
+        ondragstart="drag(event)"
+      />
+      <img
+        src="https://t3.ftcdn.net/jpg/01/90/54/46/240_F_190544684_9AWVIRbteHt50N8C3VMGUpThDu7JkIzk.jpg"
+        draggable="true"
+        ondragstart="drag(event)"
+      />
+
+      <img
+        src="https://cdn-icons-png.flaticon.com/128/7867/7867551.png"
+        draggable="true"
+        ondragstart="drag(event)"
+      />
+      <img
+        src="https://t3.ftcdn.net/jpg/05/96/06/58/240_F_596065800_wrry4ZpxN8EFU2m48427KN9x1EF2Gsyg.jpg"
+        draggable="true"
+        ondragstart="drag(event)"
+      />
+      <img
+        src="https://t4.ftcdn.net/jpg/01/39/31/79/240_F_139317922_FAWtQJMMVOVvDeM2OVg0ofiwIvBUrrux.jpg"
+        draggable="true"
+        ondragstart="drag(event)"
+      />
+      <img
+        src="https://cdn-icons-png.flaticon.com/128/4052/4052660.png"
+        draggable="true"
+        ondragstart="drag(event)"
+      />
+      <img
+        src="https://t3.ftcdn.net/jpg/03/50/89/46/240_F_350894638_Xigkly71gSU2tJhwPRiQBYiAK5qgtpuG.jpg"
+        draggable="true"
+        ondragstart="drag(event)"
+      />
+      <img
+        src="https://cdn-icons-png.flaticon.com/128/4872/4872128.png"
+        draggable="true"
+        ondragstart="drag(event)"
+      />
+    </div>
+    <div onclick="ToggleImages()" class="imagebutton">Stickers</div>
     <!-- the actual play ground starts here -->
-    <div id="PlayGround"></div>
-    <!-- Your content here -->
-    <!-- <textarea id="code-editor" name="code-editor"></textarea>
-    <textarea id="code-editor" name="code-editor"></textarea> -->
-    <script>
-      // Initialize CodeMirror
-      let PlayGround = document.getElementById("PlayGround");
-      let SelectedElement;
-      // now here i'll create those htmls
-      var elementHTML = `
-      <div id="id1684851225384">
-        <div id="id1684851251761">
-          <div id="id1684851279793">
-            <div id="id1684851304817"></div>
-            <div style="background: yellow;" id="id1684851304817"></div>
-            <div style="background: green;" id="id1684851304817"></div>
+    <div
+      id="PlayGround"
+      ondrop="drop(event)"
+      ondragover="allowDrop(event)"
+    ></div>
+  </body>
+  <script>
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function drag(event) {
+      event.dataTransfer.setData("text", event.target.src);
+    }
+
+    function drop(event) {
+      event.preventDefault();
+      const imageUrl = event.dataTransfer.getData("text");
+      const img = document.createElement("img");
+      img.src = imageUrl;
+      img.width = "50";
+      img.style.left = event.clientX - 30 + "px";
+      img.style.top = event.clientY - 30 + "px";
+      event.target.appendChild(img);
+    }
+    // Initialize CodeMirror
+    let Images = document.getElementById("imagesList");
+    let PlayGround = document.getElementById("PlayGround");
+    let shown = false;
+    let SelectedElement;
+    // now here i'll create those htmls
+    var elementHTML = `
+          <div id="id1684851225384">
+            <div id="id1684851251761">
+              <div id="id1684851279793">
+                <div id="id1684851304817"></div>
+                <div style="background: yellow;" id="id1684851304817"></div>
+                <div style="background: green;" id="id1684851304817"></div>
+              </div>
+                <input id = "myInput" type="text" placeholder = "Title" />
+            </div>
+            <textarea type="text" id="code-editor" name="code-editor"></textarea>
           </div>
-            <input id = "myInput" type="text" placeholder = "Title" />
-        </div>
-        <textarea type="text" id="code-editor" name="code-editor"></textarea>
-      </div>
-    `;
+        `;
 
-      function Highlighter() {
-        let textareas = document.querySelectorAll("#code-editor");
-
-        for (let i = 0; i < textareas.length; i++) {
-          const editor = CodeMirror.fromTextArea(textareas[i], {
-            mode: "javascript", // Set the language mode, for example, 'javascript'
-            lineNumbers: true, // Show line numbers
-            fontSize: 50,
-            lineWrapping: true,
-            smartIndent: true,
-            autocorrect: true,
-            theme: "material-darker" // Set the theme to Material Dark
-          });
-        }
-        // the actual script for the
+    function ToggleImages() {
+      if (shown) {
+        Images.style.width = "0px";
+        document.querySelector(".imagebutton").innerHTML = "Stickers";
+        shown = false;
+      } else {
+        Images.style.width = "100%";
+        shown = true;
+        document.querySelector(".imagebutton").innerHTML = "HIDE";
       }
-      function Resizer() {
-        let containers = document.querySelectorAll("#id1684851225384");
+    }
+    function Highlighter() {
+      let textareas = document.querySelectorAll("#code-editor");
 
-        for (let i = 0; i < containers.length; i++) {
-          let rectangle = containers[i];
+      // for (let i = 0; i < textareas.length; i++) {
+      const editor = CodeMirror.fromTextArea(textareas[textareas.length - 1], {
+        mode: "javascript", // Set the language mode, for example, 'javascript'
+        lineNumbers: true, // Show line numbers
+        fontSize: 50,
+        lineWrapping: true,
+        smartIndent: true,
+        autocorrect: true,
+        theme: "material-darker" // Set the theme to Material Dark
+      });
+      // }
+      // the actual script for the
+    }
+    function Resizer() {
+      let containers = document.querySelectorAll("#id1684851225384");
 
-          // Variables to store initial position and size
-          var startX, startY, startWidth, startHeight;
+      for (let i = 0; i < containers.length; i++) {
+        let rectangle = containers[i];
 
-          // Variable to track if resizing is active
-          var isResizing = false;
+        // Variables to store initial position and size
+        var startX, startY, startWidth, startHeight;
 
-          // Function to handle the drag event
-          function handleDrag(event) {
-            if (isResizing) {
-              // Calculate the new position
-              var newWidth = startWidth + event.clientX - startX;
-              var newHeight = startHeight + event.clientY - startY;
+        // Variable to track if resizing is active
+        var isResizing = false;
 
-              // Update the size of the rectangle
-              rectangle.style.width = newWidth + "px";
-              rectangle.style.height = newHeight + "px";
-            }
+        // Function to handle the drag event
+        function handleDrag(event) {
+          if (isResizing) {
+            // Calculate the new position
+            var newWidth = startWidth + event.clientX - startX;
+            var newHeight = startHeight + event.clientY - startY;
+
+            // Update the size of the rectangle
+            rectangle.style.width = newWidth + "px";
+            rectangle.style.height = newHeight + "px";
           }
+        }
+        document.removeEventListener("mousemove", handleDrag);
+        // Function to handle the start of the drag
+        function handleDragStart(event) {
+          // Check if cursor is at the edge of the rectangle
+          var rect = rectangle.getBoundingClientRect();
+          var edgeSize = 10; // Adjust this value to change the edge size
+          if (
+            event.clientX > rect.right - edgeSize ||
+            event.clientX < rect.left + edgeSize ||
+            event.clientY > rect.bottom - edgeSize ||
+            event.clientY < rect.top + edgeSize
+          ) {
+            // Store the initial position and size
+            startX = event.clientX;
+            startY = event.clientY;
+            startWidth = rectangle.offsetWidth;
+            startHeight = rectangle.offsetHeight;
+
+            // Set resizing flag to true
+            isResizing = true;
+
+            // Attach the drag event listener to the document
+            document.addEventListener("mousemove", handleDrag);
+          }
+        }
+
+        // Function to handle the end of the drag
+        function handleDragEnd(event) {
+          // Set resizing flag to false
+          isResizing = false;
+
+          // Remove the drag event listener from the document
           document.removeEventListener("mousemove", handleDrag);
-          // Function to handle the start of the drag
-          function handleDragStart(event) {
-            // Check if cursor is at the edge of the rectangle
-            var rect = rectangle.getBoundingClientRect();
-            var edgeSize = 10; // Adjust this value to change the edge size
-            if (
-              event.clientX > rect.right - edgeSize ||
-              event.clientX < rect.left + edgeSize ||
-              event.clientY > rect.bottom - edgeSize ||
-              event.clientY < rect.top + edgeSize
-            ) {
-              // Store the initial position and size
-              startX = event.clientX;
-              startY = event.clientY;
-              startWidth = rectangle.offsetWidth;
-              startHeight = rectangle.offsetHeight;
-
-              // Set resizing flag to true
-              isResizing = true;
-
-              // Attach the drag event listener to the document
-              document.addEventListener("mousemove", handleDrag);
-            }
-          }
-
-          // Function to handle the end of the drag
-          function handleDragEnd(event) {
-            // Set resizing flag to false
-            isResizing = false;
-
-            // Remove the drag event listener from the document
-            document.removeEventListener("mousemove", handleDrag);
-          }
-
-          // Attach the drag event listeners to the rectangle
-          rectangle.addEventListener("mousedown", handleDragStart);
-          rectangle.addEventListener("mouseup", handleDragEnd);
         }
+
+        // Attach the drag event listeners to the rectangle
+        rectangle.addEventListener("mousedown", handleDragStart);
+        rectangle.addEventListener("mouseup", handleDragEnd);
       }
+    }
 
-      function InputResizer() {
-        var inputs = document.querySelectorAll("#myInput");
-        for (let i = 0; i < inputs.length; i++) {
-          let input = inputs[i];
-          input.addEventListener("input", function () {
-            input.style.width = "70px";
-            input.style.width =
-              input.scrollWidth <= 70 ? "70px" : input.scrollWidth + "px";
-          });
-        }
-      }
-
-      function MoveRec() {
-        var rectangles = document.querySelectorAll("#id1684851225384");
-        var topbars = document.querySelectorAll("#id1684851251761");
-        var isDragging = false;
-        var dragStartX;
-        var dragStartY;
-        var initialLeft;
-        var initialTop;
-        var activeRectangle;
-
-        topbars.forEach(function (topbar, index) {
-          topbar.addEventListener("mousedown", function (event) {
-            isDragging = true;
-            dragStartX = event.clientX;
-            dragStartY = event.clientY;
-            activeRectangle = rectangles[index];
-            initialLeft = activeRectangle.offsetLeft;
-            initialTop = activeRectangle.offsetTop;
-          });
+    function InputResizer() {
+      var inputs = document.querySelectorAll("#myInput");
+      for (let i = 0; i < inputs.length; i++) {
+        let input = inputs[i];
+        input.addEventListener("input", function () {
+          input.style.width = "70px";
+          input.style.width =
+            input.scrollWidth <= 70 ? "70px" : input.scrollWidth + "px";
         });
+      }
+    }
 
-        document.addEventListener("mousemove", function (event) {
-          if (isDragging) {
-            var offsetX = event.clientX - dragStartX;
-            var offsetY = event.clientY - dragStartY;
-            activeRectangle.style.left = initialLeft + offsetX + "px";
-            activeRectangle.style.top = initialTop + offsetY + "px";
+    function MoveRec() {
+      var rectangles = document.querySelectorAll("#id1684851225384");
+      var topbars = document.querySelectorAll("#id1684851251761");
+      var isDragging = false;
+      var dragStartX;
+      var dragStartY;
+      var initialLeft;
+      var initialTop;
+      var activeRectangle;
+
+      topbars.forEach(function (topbar, index) {
+        topbar.addEventListener("mousedown", function (event) {
+          isDragging = true;
+          dragStartX = event.clientX;
+          dragStartY = event.clientY;
+          activeRectangle = rectangles[index];
+          initialLeft = activeRectangle.offsetLeft;
+          initialTop = activeRectangle.offsetTop;
+        });
+      });
+
+      document.addEventListener("mousemove", function (event) {
+        if (isDragging) {
+          var offsetX = event.clientX - dragStartX;
+          var offsetY = event.clientY - dragStartY;
+          activeRectangle.style.left = initialLeft + offsetX + "px";
+          activeRectangle.style.top = initialTop + offsetY + "px";
+        }
+      });
+
+      document.addEventListener("mouseup", function (event) {
+        isDragging = false;
+        activeRectangle = null;
+      });
+    }
+
+    // select parent element
+
+    function SelectElement() {
+      let parents = document.querySelectorAll("#id1684851225384");
+
+      PlayGround.addEventListener("click", (event) => {
+        if (event.target.tagName === "IMG") {
+          SelectedElement = event.target;
+          return;
+        }
+      });
+
+      parents.forEach(function (parent) {
+        parent.addEventListener("click", function (event) {
+          if (!event.target.classList.contains("myInput")) {
+            SelectedElement = parent;
           }
         });
+      });
+    }
 
-        document.addEventListener("mouseup", function (event) {
-          isDragging = false;
-          activeRectangle = null;
-        });
-      }
+    // remove element
 
-      // select parent element
-
-      function SelectElement() {
-        let parents = document.querySelectorAll("#id1684851225384");
-
-        parents.forEach(function (parent) {
-          parent.addEventListener("click", function (event) {
-            if (!event.target.classList.contains("myInput")) {
-              SelectedElement = parent;
-              console.log(parent);
-            }
-          });
-        });
-      }
-
-      // remove element
-      function RemoveElement() {
+    function handleDeleteKeyPress(event) {
+      if (event.key === "Delete") {
+        // console.log("Enter key pressed!");
         SelectedElement.remove();
       }
-      function createDataCode() {
-        var container = document.createElement("div");
-        container.innerHTML = elementHTML;
-        PlayGround.appendChild(container.firstElementChild);
+    }
+    function RemoveElement() {
+      SelectedElement.remove();
+    }
 
-        setTimeout(() => {
-          Highlighter();
-          Resizer();
-          InputResizer();
-          MoveRec();
-          SelectElement();
-        }, 100);
-      }
+    function DeleteListner() {
+      document.removeEventListener("keydown", handleDeleteKeyPress);
+      document.addEventListener("keydown", handleDeleteKeyPress);
+    }
 
-      Highlighter();
-      Resizer();
-    </script>
-  </body>
+    function createDataCode() {
+      var container = document.createElement("div");
+      container.innerHTML = elementHTML;
+      PlayGround.appendChild(container.firstElementChild);
+
+      setTimeout(() => {
+        Highlighter();
+        Resizer();
+        InputResizer();
+        MoveRec();
+        SelectElement();
+        DeleteListner();
+      }, 100);
+    }
+    DeleteListner();
+  </script>
 </html>
