@@ -3,7 +3,15 @@ body {
   background: azure;
 }
 #PlayGround {
+  width: 100vw;
+  height: 90vh;
+  overflow: overlay;
   position: relative;
+}
+
+#PlayGround img {
+  position: absolute;
+  cursor: pointer;
 }
 #id1684851225384 {
   height: 300px;
@@ -15,6 +23,7 @@ body {
   border-radius: 25px;
   overflow: hidden;
   background: rgb(21, 31, 50);
+  box-shadow: 5px 5px 17px #606666, -5px -5px 17px #ffffff;
 }
 #id1684851251761 {
   height: 45px;
@@ -71,11 +80,53 @@ body {
 #id1684907668905 div img {
   filter: invert(0.3);
 }
+#imagesList img {
+  width: 30px;
+  margin: 5px;
+  cursor: grab;
+}
+#imagesList {
+  background: #fff;
+  transition-duration: 0.5s;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  overflow-x: scroll;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 0px;
+}
+.imagebutton {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 5px 10px;
+  border: 1px solid grey;
+  border-radius: 15px;
+  text-transform: uppercase;
+  font-family: sans-serif;
+  font-weight: bold;
+  box-sizing: border-box;
+  color: grey;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  transition-duration: 0.3s;
+  align-items: center;
+}
+.imagebutton:hover {
+  background: grey;
+  color: #fff;
+}
 #id1684907668905 {
   position: fixed;
   bottom: 50px;
   height: 60px;
   width: 100%;
+
+  z-index: 999;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
