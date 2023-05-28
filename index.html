@@ -3,21 +3,21 @@
   <head>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css"
     />
     <link rel="stylesheet" href="./new.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/material-darker.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/material-darker.min.css"
     />
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
     <!-- Include the language mode you want to use, for example, JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
   </head>
   <body>
     <div id="id1684907668905">
-      <div onclick="createDataCode()" class="add-button">
+      <div onclick="CreatePop()" class="add-button">
         <img width="30px" alt="delete button" src="./assects/add.svg" />
       </div>
 
@@ -74,8 +74,27 @@
       id="PlayGround"
       ondrop="drop(event)"
       ondragover="allowDrop(event)"
-    ></div>
+    >
+    <!-- this is popup -->
+    <div class="popup">
+  <h2>Select a Language.</h2>
+  <select id="myDropdown" onchange="handleDropdownChange(event)">
+    <option value="javascript">Select</option>
+     <option value="javascript">JavaScript</option>
+    <option value="htmlmixed">HTML</option>
+    <option value="css">CSS</option>
+    <option value="jsx">JSX</option>
+  </select> 
+</div>
+    </div>
   </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/jsx/jsx.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/xml/xml.min.js"></script>
+
+
+
   <script>
     function allowDrop(event) {
       event.preventDefault();
@@ -91,8 +110,8 @@
       const img = document.createElement("img");
       img.src = imageUrl;
       img.width = "50";
-      img.style.left = event.clientX - 30 + "px";
-      img.style.top = event.clientY - 30 + "px";
+      img.style.left = event.clientX - 50 + "px";
+      img.style.top = event.clientY - 50 + "px";
       event.target.appendChild(img);
     }
     // Initialize CodeMirror
@@ -126,12 +145,11 @@
         document.querySelector(".imagebutton").innerHTML = "HIDE";
       }
     }
-    function Highlighter() {
+    function Highlighter(lan) {
       let textareas = document.querySelectorAll("#code-editor");
-
       // for (let i = 0; i < textareas.length; i++) {
       const editor = CodeMirror.fromTextArea(textareas[textareas.length - 1], {
-        mode: "javascript", // Set the language mode, for example, 'javascript'
+        mode: lan, // Set the language mode, for example, 'javascript'
         lineNumbers: true, // Show line numbers
         fontSize: 50,
         lineWrapping: true,
@@ -280,7 +298,6 @@
 
     function handleDeleteKeyPress(event) {
       if (event.key === "Delete") {
-        // console.log("Enter key pressed!");
         SelectedElement.remove();
       }
     }
@@ -293,13 +310,13 @@
       document.addEventListener("keydown", handleDeleteKeyPress);
     }
 
-    function createDataCode() {
+    function createDataCode(lan) {
       var container = document.createElement("div");
       container.innerHTML = elementHTML;
       PlayGround.appendChild(container.firstElementChild);
 
       setTimeout(() => {
-        Highlighter();
+        Highlighter(lan);
         Resizer();
         InputResizer();
         MoveRec();
@@ -307,6 +324,17 @@
         DeleteListner();
       }, 100);
     }
+        SelectElement();
     DeleteListner();
+let popupWindow = document.querySelector('.popup')
+    function CreatePop(){
+      popupWindow.style.display = 'block';
+    }
+  function handleDropdownChange(event) {
+    const dropdown = event.target;
+    const selectedOption = dropdown.value;
+    createDataCode(selectedOption);
+    popupWindow.style.display = 'none'
+  }
   </script>
 </html>
