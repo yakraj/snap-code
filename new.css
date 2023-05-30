@@ -15,6 +15,7 @@ body {
 }
 #id1684851225384 {
   height: 300px;
+  resize: both;
   width: 250px;
   position: absolute;
   top: 0;
@@ -153,15 +154,25 @@ body {
   height: 100%;
   width: 100%;
 }
+#title {
+  width: auto !important;
+}
 
-input {
+input,
+#title {
+  /* this is for div */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* this is for all  */
   border-radius: 50px;
   height: 30px;
+  color: #000;
   background: rgb(56, 65, 82);
   min-width: 20px;
   width: 70px;
   max-width: 100%;
-  padding: 0 10px;
+  padding: 0 15px;
   box-sizing: border-box;
   border: none;
   outline: none;
@@ -169,6 +180,7 @@ input {
   text-transform: uppercase;
   color: rgb(255, 255, 255);
   font-weight: 700;
+  font-family: sans-serif;
   letter-spacing: 2px;
 }
 .popup {
@@ -193,4 +205,25 @@ input {
   width: 100%;
   padding: 5px;
   font-size: 14px;
+}
+
+.captureButtom:hover .captureoption {
+  display: flex !important;
+}
+.captureoption {
+  display: none !important;
+  position: absolute;
+  top: -75%;
+  height: 50px !important;
+  width: 100px !important;
+  border-radius: 5px !important;
+  justify-content: space-around !important;
+  align-items: center;
+}
+.Modeselect {
+  transition-duration: 0.3s;
+  border-radius: 10px !important;
+}
+.Modeselect:hover {
+  filter: invert(1);
 }
