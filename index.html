@@ -107,7 +107,7 @@
     <div class="popup">
   <h2>Select a Language.</h2>
   <select id="myDropdown" onchange="handleDropdownChange(event)">
-    <option value="javascript">Select</option>
+    <option value="select">Select</option>
      <option value="javascript">JavaScript</option>
     <option value="htmlmixed">HTML</option>
     <option value="css">CSS</option>
@@ -345,6 +345,7 @@ https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js
     function createDataCode(lan) {
       var container = document.createElement("div");
       container.innerHTML = elementHTML;
+      
       PlayGround.appendChild(container.firstElementChild);
 
       setTimeout(() => {
@@ -363,10 +364,12 @@ let popupWindow = document.querySelector('.popup')
       popupWindow.style.display = 'block';
     }
   function handleDropdownChange(event) {
+    
     const dropdown = event.target;
     const selectedOption = dropdown.value;
     createDataCode(selectedOption);
     popupWindow.style.display = 'none'
+    dropdown.value = 'select'
   }
    MoveRec();
        
