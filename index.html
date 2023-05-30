@@ -16,9 +16,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
   </head>
   <body>
+    <div class= 'ScreenCapture' style = "z-index: 1000;background: #ffffff47;top: '40%';left: '40%'; display: none;" id="id1684851225384">
+            <div style ="    display: flex;
+    justify-content: right;
+    padding: 10px;
+    position: absolute;
+    top: 10px;
+    z-index:1001;
+    right: 10px;
+    box-sizing: border-box;" class='buttons'>
+    <button onclick = "CancelCapture()" style = "margin: 5px;
+    padding: 10px;">cancel</button>
+    <button onclick = "captureScreen()" style = "margin: 5px;
+    padding: 10px;">capture</button></div>
+            <div style = "height: 95%; opacity: 0" id="id1684851251761">
+             </div>
+            </div>
+    
+    
     <div id="id1684907668905">
-      <div onclick="CreatePop()" class="add-button">
+      <div onclick="CreatePop()" class="add-button addButton">
         <img width="30px" alt="delete button" src="./assects/add.svg" />
+      </div>
+      <div class="add-button captureButtom">
+        <div class = 'captureoption'>
+          <div onclick = "PortraitObserver()" class = "Modeselect">
+          <img style = "transform: rotate(90deg)"  width="40px" alt="delete button" src="./assects/rectangle.svg" />
+          </div>
+          <div onclick = "LandscapeObserver()" class = "Modeselect">
+          <img  width="40px" alt="delete button" src="./assects/rectangle.svg" /></div>
+          </div>
+        <img width="30px" alt="delete button" src="./assects/camera.svg" />
       </div>
 
       <!-- <div onclick="RemoveElement()" class="delete-button">
@@ -92,6 +120,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/css/css.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/jsx/jsx.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/xml/xml.min.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js
+"></script>
 
 
 
@@ -117,6 +148,7 @@
     // Initialize CodeMirror
     let Images = document.getElementById("imagesList");
     let PlayGround = document.getElementById("PlayGround");
+    let ScreenCapture = document.querySelector('.ScreenCapture')
     let shown = false;
     let SelectedElement;
     // now here i'll create those htmls
@@ -317,8 +349,8 @@
 
       setTimeout(() => {
         Highlighter(lan);
-        Resizer();
         InputResizer();
+        // Resizer();
         MoveRec();
         SelectElement();
         DeleteListner();
@@ -336,5 +368,138 @@ let popupWindow = document.querySelector('.popup')
     createDataCode(selectedOption);
     popupWindow.style.display = 'none'
   }
+   MoveRec();
+       
+  //  
+  
+    // var myElement = ScreenCapture;
+    // var observer = new MutationObserver(function(mutations) {
+    //   mutations.forEach(function(mutation) {
+    //     if (mutation.type === 'attributes' && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+    //      let height = myElement.offsetHeight;
+    //      ScreenCapture.style.width = (height/5)*4 +"px"
+         
+    //       // Perform any actions you want when the element is resized
+    //     }
+    //   });
+    // });
+    // observer.observe(myElement, { attributes: true, attributeFilter: ['style', 'class'] });
+  
+  
+  var myElement = ScreenCapture;
+
+    function observerCallback(data) {
+      return function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes' && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+            let height = myElement.offsetHeight;
+            ScreenCapture.style.width = (height/data.heightRatio)*data.widthRatio +"px"
+            // Perform any actions you want when the element is resized
+          }
+        });
+      };
+    }
+
+    var portrait = {heightRatio: 5,widthRatio: 4}; // Set your assumed height here
+    var landscape = {heightRatio: 9,widthRatio: 16}; // Set your assumed height here
+    var observer1 = new MutationObserver(observerCallback(portrait));
+    var observer2 = new MutationObserver(observerCallback(landscape));
+
+
+function PortraitObserver(){
+     observer1.disconnect();
+      observer2.disconnect();
+    ScreenCapture.style.display = 'block'
+    ScreenCapture.style.width = '272px'
+    ScreenCapture.style.height = '340px'
+    observer1.observe(myElement, { attributes: true, attributeFilter: ['style', 'class'] });
+}
+function LandscapeObserver(){
+   observer1.disconnect();
+      observer2.disconnect();
+ 
+    ScreenCapture.style.display = 'block'
+    ScreenCapture.style.width = '512px'
+    ScreenCapture.style.height = '288px'
+    observer2.observe(myElement, { attributes: true, attributeFilter: ['style', 'class'] });
+}
+
+
+function CancelCapture(){
+    observer1.disconnect();
+      observer2.disconnect();
+    ScreenCapture.style.display = 'none'
+}
+
+
+function captureScreen() {
+  var captureArea = ScreenCapture
+  var rect = captureArea.getBoundingClientRect();
+  var inputTags = document.getElementsByTagName('input');
+
+  // Create an array to store the references to the div elements and their original input elements
+  var inputDivPairs = [];
+
+  // Replace input tags with div elements
+  for (var i = 0; i < inputTags.length; i++) {
+    var inputElement = inputTags[i];
+    var divElement = document.createElement('div');
+    divElement.id = 'title';
+    divElement.innerHTML = inputElement.value;
+    inputElement.parentNode.replaceChild(divElement, inputElement);
+
+    // Store the reference to the div element and its original input element
+    inputDivPairs.push({
+      input: inputElement,
+      div: divElement
+    });
+  }
+
+  // Capture the modified document
+  html2canvas(document.documentElement, {
+    windowWidth: document.documentElement.offsetWidth,
+    windowHeight: document.documentElement.offsetHeight,
+    x: rect.left + window.pageXOffset,
+    y: rect.top + window.pageYOffset,
+    width: rect.width,
+    height: rect.height,
+    useCORS: true,
+    allowTaint: true,
+    ignoreElements: function(element) {
+      return element === captureArea || captureArea.contains(element);
+    },
+    scale: 2
+  }).then(function(canvas) {
+    // Replace the div elements with their original input elements
+    inputDivPairs.forEach(function(pair) {
+      var inputElement = pair.input;
+      var divElement = pair.div;
+
+      // Restore the default attributes of the input element
+      for (var attr in inputElement.dataset) {
+        inputElement.setAttribute(attr, inputElement.dataset[attr]);
+      }
+
+      // Replace the div element with the input element
+      divElement.parentNode.replaceChild(inputElement, divElement);
+    });
+
+    // Save the captured canvas as an image
+    var link = document.createElement('a');
+    link.href = canvas.toDataURL();
+    link.download = 'screenshot.png';
+    link.click();
+  });
+
+  observer1.disconnect();
+  observer2.disconnect();
+  captureArea.style.display = 'none';
+}
+
+
+
+  
+  // ScreenCapture.addEventListener('resize',(e)=>{console.log('resizing')})
+      
   </script>
 </html>
