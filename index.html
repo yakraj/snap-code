@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
+     <link rel="shortcut icon" type="image/x-icon" href="./assects/icon.ico" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css"
     />
+    <title>Snap Code</title>
     <link rel="stylesheet" href="./new.css" />
     <link
       rel="stylesheet"
@@ -330,7 +332,8 @@ https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js
 
     function handleDeleteKeyPress(event) {
       if (event.key === "Delete") {
-        SelectedElement.remove();
+        if(!SelectedElement.classList.contains('ScreenCapture')){
+        SelectedElement.remove();}
       }
     }
     function RemoveElement() {
@@ -444,19 +447,19 @@ function captureScreen() {
   var inputDivPairs = [];
 
   // Replace input tags with div elements
-  for (var i = 0; i < inputTags.length; i++) {
+    for (var i = inputTags.length - 1; i >= 0; i--) {
     var inputElement = inputTags[i];
     var divElement = document.createElement('div');
     divElement.id = 'title';
     divElement.innerHTML = inputElement.value;
     inputElement.parentNode.replaceChild(divElement, inputElement);
 
-    // Store the reference to the div element and its original input element
     inputDivPairs.push({
       input: inputElement,
       div: divElement
     });
   }
+
 
   // Capture the modified document
   html2canvas(document.documentElement, {
